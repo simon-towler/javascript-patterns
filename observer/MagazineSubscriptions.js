@@ -46,9 +46,11 @@ var publisher = {
 
       for (i = 0; i < max; i += 1) {
         if (action === 'publish') {
+            //pass the argument into the function provided by the subscriber at index i
           subscribers[i](arg);
-        } else {
-            if (subscribers[i] === arg) {
+        } else {//if we're not publishing, we must be unsubscribing, so...
+            if (subscribers[i] === arg) {//id the unsubscriber by the func it provided
+                //remove the function provided by the subscriber at index i
               subscribers.splice(i, 1);
             }
         }
