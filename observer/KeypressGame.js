@@ -57,3 +57,36 @@ Player.prototype.play = function () {
   this.points += 1;
   this.fire('play', this);
 };
+
+
+//game object
+var game = {
+
+  keys: {},
+
+  addPlayer: function (player) {
+    var key = player.key.toString().charCodeAt(0);
+    this.keys[key] = player;
+  },
+
+  handleKeypress: function (e) {
+    e = e || window.event; // IE
+    if (game.keys[e.which]) {
+      game.keys[e.which].play();
+    }
+  },
+
+  handlePlay: function (player) {
+    var i,
+      players = this.keys,
+      score = {};
+
+    for (i in players) {
+      if (players.hasOwnProperty(i)) {
+        score[players[i].name] = players[i].points;
+      }
+    }
+    this.fire('scorechange', score);
+  }
+
+};
