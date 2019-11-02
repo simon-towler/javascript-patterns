@@ -90,3 +90,29 @@ var game = {
   }
 
 };
+
+makePublisher(Player.prototype);
+makePublisher(game);
+
+//subscribe
+Player.prototype.on("newplayer", "addPlayer", game);
+Player.prototype.on("play", "handlePlay", game);
+game.on("scorechange", scoreboard.updatte, scoreboard);
+window.onkeypress = game.handleKeypress;
+
+//dynamically create some player objects
+//(with their corresponding keys to be pressed)
+var playername, key;
+while (1) {
+  playername = prompt("Add player (name)");
+  if (!playername) {
+    break;
+  }
+  while (1) {
+    key = prompt("Key for " + playername + "?");
+    if (key) {
+      break;
+    }
+  }
+  new Player(playername, key);
+}
