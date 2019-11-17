@@ -1,3 +1,5 @@
+//http://www.jspatterns.com/book/7/observer-game.html
+
 //publisher object
 var publisher = {
 
@@ -32,7 +34,7 @@ var publisher = {
     i,
     max = subscribers ? subscribers.length : 0;
 
-    for (i=0, i < max; i += 1) {
+    for (i=0; i < max; i += 1) {
       if (action === 'publish') {
         subscribers[i].handler.call(subscribers[i].context, arg);
       } else {
@@ -44,6 +46,20 @@ var publisher = {
     }
   }
 };
+
+/* function that takes an object and turns it into a publisher
+by simply copying over the generic publisher's methods */
+function makePublisher(o) {
+  var i;
+  for (i in publisher) {
+      if (publisher.hasOwnProperty(i) && typeof publisher[i] === 'function') {
+          o[i] = publisher[i];
+      }
+  }
+  o.subscribers = {any: []};//initialize subscribers on new publisher o
+  console.log("makePublisher was called");
+}
+
 
 //Player constructor
 function Player(name, key) {
@@ -97,7 +113,7 @@ makePublisher(game);
 //subscribe
 Player.prototype.on("newplayer", "addPlayer", game);
 Player.prototype.on("play", "handlePlay", game);
-game.on("scorechange", scoreboard.updatte, scoreboard);
+game.on("scorechange", scoreboard.update, scoreboard);
 window.onkeypress = game.handleKeypress;
 
 //dynamically create some player objects
